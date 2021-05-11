@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const postRoute = require("./routes/post");
 
-app.use("/posts", postRoute);
+app.use(express.json());
+app.use("/post", postRoute);
 
 module.exports = app
