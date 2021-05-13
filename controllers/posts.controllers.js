@@ -26,8 +26,14 @@ const createPosts = (req,res, next) => {
 const showPost = (req,res,next) => {
     const id = req.params.id;
     models.Post.findByPk(id).then(result => {
-        res.status(200).json(result)
-    }).catch(error => {
+        if (result != 0)res.status(200).json(result)
+        else{
+            res.status(404).json({
+                message: "Post not found!"
+            })
+        }
+    })
+    .catch(error => {
         res.status(500).json({
             message : "Oops!, something went wrong",
         })
@@ -38,8 +44,14 @@ const showPost = (req,res,next) => {
 
 const index = (req,res,next) => {
     models.Post.findAll().then(result => {
-        res.status(200).json(result)
-    }).catch(error => {
+        if(result != 0)res.status(200).json(result)
+        else{
+            res.status(200).json({
+                message : "You have not created any Post yet!"
+            })
+        }
+    })
+    .catch(error => {
         res.status(500).json({
             message : "Oops!, something went wrong",
         })
