@@ -50,12 +50,69 @@ const signUp = async(req,res) => {
             })
     }
         
-    
-        
 }
 
+
+const login = async (req,res) => {
+    const {email,password} = req.body;
+    const user = {
+        email,
+        password
+    }
+    // creating a scheme for data validation
+    const schema = {
+        email : {type:"email", optional:false,empty:false,trimLeft:true,trimRight:true},
+        password: {type:"string",optional:false,empty:false,min:7},
+    }
+    const v =  new validator();
+    const validatorResponse = await v.validate(user,schema)
+    if (validatorResponse !== true) {
+        res.status(400).json({
+            message : "Validation failed",
+            error : validatorResponse
+        })
+        return;
+    }
+    else {
+        try{
+            const user = await models.User.findOne({where:{email}});
+            if(user === null){
+                res.status(400).json({
+                    status: false,
+                    message : "Invalid credentials! ",
+                })
+            }
+
+            else{
+                const passwordMatch = await bcrypt.compare(password,user.password);
+                if(passwordMatch){
+                const token = await jwt.sign({
+                    email:user.email,
+                    userId:user.id
+                }, process.env.JWT_KEY);   
+                    if(token) res.status(200).json({status:true,message:"User Login Successfully",id:user.id,token,firstname:user.firstname,lastname:user.lastname,email:user.email})
+                    else{
+                        res.status(400).json({
+                            status: false,
+                            message : "something went wrong while logging you in!",
+                        })
+                    }
+                }
+            }
+        }
+        catch(error){
+            res.status(500).json({
+                status: false,
+                message : "Oga, E Be like say your village people dey your matter",
+            })
+        }
+}
+    }
+    
+
 module.exports = {
-    signUp
+    signUp,
+    login
 }
 
 
