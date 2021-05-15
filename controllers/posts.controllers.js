@@ -1,7 +1,7 @@
 const validator = require("fastest-validator");
 const models = require("../models");
 
-const createPosts = (req,res, next) => {
+const createPosts = (req,res) => {
     const {title,content,imageUrl,category_id} = req.body;
     const post = {
         title,
@@ -27,7 +27,7 @@ const createPosts = (req,res, next) => {
             error : validatorResponse
         })
     }
-    models.Post.create(post).then(result => {
+    else{ models.Post.create(post).then(result => {
             res.status(201).json({
                 status : true,
                 message : "posts created successfully",
@@ -39,9 +39,10 @@ const createPosts = (req,res, next) => {
             message : "Oops!, something went wrong",
             post: error
         })
-        return next(error);
+    
     })
-} 
+} }
+   
 
 const showPost = (req,res,next) => {
     const id = req.params.id;
