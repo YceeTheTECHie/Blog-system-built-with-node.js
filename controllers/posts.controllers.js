@@ -2,11 +2,12 @@ const validator = require("fastest-validator");
 const models = require("../models");
 
 const createPosts = (req,res, next) => {
+    const {title,content,imageUrl,category_id} = req.body;
     const post = {
-        title : req.body.title,
-        content : req.body.content,
-        imageUrl : req.body.imageUrl,
-        categoryId : req.body.category_id,
+        title,
+        content,
+        imageUrl,
+        categoryId :category_id,
         userId : 1
     }
     // creating a scheme for data validation
@@ -28,11 +29,13 @@ const createPosts = (req,res, next) => {
     }
     models.Post.create(post).then(result => {
             res.status(201).json({
+                status : true,
                 message : "posts created successfully",
                 post : result
             })
     }).catch(error => {
         res.status(500).json({
+            status : false,
             message : "Oops!, something went wrong",
             post: error
         })
@@ -52,6 +55,7 @@ const showPost = (req,res,next) => {
     })
     .catch(error => {
         res.status(500).json({
+            status : false,
             message : "Oops!, something went wrong",
         })
         return next(error);
@@ -70,6 +74,7 @@ const index = (req,res,next) => {
     })
     .catch(error => {
         res.status(500).json({
+            status : false,
             message : "Oops!, something went wrong",
         })
         return next(error);
@@ -109,12 +114,14 @@ const update = (req,res,next) => {
     models.Post.update(updatedPost, {where : {id:id,userId:userId}})
     .then(result => {
         res.status(200).json({
+            status : true,
             message : "post updated successfully",
             post : updatedPost
         })
-    }).catch(error => {
+    })
+    .catch(error => {
         res.status(500).json({
-
+            status : false,
             message : "something went wrong"
 
         })
@@ -127,7 +134,6 @@ const update = (req,res,next) => {
 const destroy = (req,res,next) => {
     const id = req.params.id;
     const userId = 1;
-    // models.Post.destroy({where : {id:id,userId:userId}}).then(result => {console.log("found nothing",result);}).catch(error => {console.log(error);})
     models.Post.destroy({where : {id,userId}})
     .then(result => {
         if (result != 0){
