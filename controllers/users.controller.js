@@ -13,7 +13,7 @@ const signUp = async(req,res) => {
                     status:false,
                     message : "Email already exists!"
                 })
-                return;
+                return; 
             }
             const user = {
                 firstname,

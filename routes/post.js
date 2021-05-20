@@ -3,6 +3,8 @@ const postController = require('../controllers/posts.controllers');
 const checkAuth = require("../middlewares/check-auth");
 
 const router = express.Router();
+
+
 router.get("/", postController.index);
 router.post("/create", checkAuth.checkAuth, postController.createPosts);
 router.get("/:id", postController.showPost);

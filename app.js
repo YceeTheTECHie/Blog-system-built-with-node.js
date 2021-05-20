@@ -4,11 +4,15 @@ const app = express();
 const postRoute = require("./routes/post");
 const userRoute = require("./routes/user");
 const imageRoute = require("./routes/images")
+const commentRoute = require("./routes/comments");
 
 app.use(express.json());
+app.use("/uploads", express.static("uploads"));
 app.use("/post", postRoute);
 app.use("/user", userRoute);
 app.use("/image",imageRoute);
+app.use("/comment", commentRoute);
+
 
 
 module.exports = app
