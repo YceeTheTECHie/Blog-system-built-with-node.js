@@ -27,7 +27,6 @@ const createPosts =  async (req,res) => {
             error : validatorResponse
         })
     }   
-
     try {
         const category = await models.Category.findByPk(category_id);
         console.log(category);
@@ -60,14 +59,12 @@ const createPosts =  async (req,res) => {
 } 
          
 
-const showPost = (req,res,next) => {
+const showPost = (req,res) => {
     const id = req.params.id;
     models.Post.findByPk(id).then(result => {
-        if (result != 0)res.status(200).json(result)
+        if (result == null)  res.status(404).json({ message: "Post not found!"})
         else{
-            res.status(404).json({
-                message: "Post not found!"
-            })
+          res.status(200).json(result)
         }
     })
     .catch(error => {
@@ -75,14 +72,13 @@ const showPost = (req,res,next) => {
             status : false,
             message : "Oops!, something went wrong",
         })
-        return next(error);
 
     })
 }
 
-const index = (req,res,next) => {
+const index = (req,res) => {
     models.Post.findAll().then(result => {
-        if(result != 0)res.status(200).json(result)
+        if(result != null)res.status(200).json(result)
         else{
             res.status(200).json({
                 message : "You have not created any Post yet!"
@@ -94,7 +90,6 @@ const index = (req,res,next) => {
             status : false,
             message : "Oops!, something went wrong",
         });
-
     })
 }
 
@@ -108,8 +103,8 @@ const update = async (req,res) => {
         categoryId:category_id
     }
 
-    const userId = req.userData.userId;
 
+    const userId = req.userData.userId;
       // creating a scheme for data validation
       const schema = {
         title : {type:"string",optional:false,max:100 },
@@ -144,7 +139,7 @@ const update = async (req,res) => {
     const userIdOnPost = await models.Post.findByPk(id);
     console.log(userIdOnPost.userId);
     console.log(userId);
-    if(userId != Number(userIdOnPost.userId)){
+    if(userId != userIdOnPost.userId){
                 res.status(401).json({
                     status : false,
                     message : "Unauthorized",
@@ -179,31 +174,37 @@ const update = async (req,res) => {
 } 
          
 
-const destroy = (req,res,next) => {
+const destroy = async (req,res) => {
     const id = req.params.id;
-    const userId = 1;
-    models.Post.destroy({where : {id,userId}})
-    .then(result => {
-        if (result != 0){
-        res.status(200).json({
-            message : "Posts deleted successfully",
-            id
-        });}
-        else{
-            res.status(404).json({
-                message : "Post not found"
-            });
-        }
-    })
-    .catch(error => {
-        console.log(error);
+    const userId = req.userData.userId;
+    // making sure only the right user can delete post
+    const userIdOnPost = await models.Post.findByPk(id);
+    if(userId != userIdOnPost.userId){
+                res.status(401).json({
+                    status : false,
+                    message : "Unauthorized",
+                })
+                return;
+            }
+
+    try{
+        const result = await models.Post.destroy({where : {id,userId}});
+            if(result != 0 ){
+                res.status(200).json({
+                    message : "Post deleted successfully",
+                });
+            }
+            else{
+                res.status(404).json({
+                    message : "Post not found"
+                });
+            }
+    }
+    catch{
             res.status(500).send({
                 message: error.message || "INTERNAL SERVER ERROR"
             });
-
-        return next(error);
-
-    });
+        }   
 }
 
 module.exports =  {

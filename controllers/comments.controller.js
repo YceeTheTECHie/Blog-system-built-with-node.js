@@ -6,7 +6,7 @@ const save = (req,res) => {
     const comment = {
         postId,
         content,    
-        userId : 1
+        userId : req.userData.userId
     }
     // creating a scheme for data validation
     const schema = {
@@ -40,46 +40,28 @@ const save = (req,res) => {
 } }
    
 
-const show = (req,res,next) => {
+const show = async (req,res) => {
     const id = req.params.id;
-    models.Comment.findByPk(id).then(result => {
-        if (result != 0)res.status(200).json(result)
+    try{
+        const result = await models.Comment.findByPk(id);
+        if (result == null){res.status(404).json({message: "Comment not found!"});}
         else{
-            res.status(404).json({
-                message: "Comment not found!"
-            })
+            res.status(200).json(result)
         }
-    })
-    .catch(error => {
+    }
+    catch(error){
         res.status(500).json({
             status : false,
             message : "Oops!, something went wrong",
         })
-        return next(error);
-
-    })
+    }
 }
 
-// const index = (req,res,next) => {
-//     models.Comment.findAll().then(result => {
-//         if(result != 0)res.status(200).json(result)
-//         else{
-//             res.status(200).json({
-//                 message : "You have not created any Post yet!"
-//             })
-//         }
-//     })
-//     .catch(error => {
-//         res.status(500).json({
-//             status : false,
-//             message : "Oops!, something went wrong",
-//         })
-//         return next(error);
 
-//     })
-// }
 
-const update = (req,res,next) => {
+
+
+const update = async (req,res) => {
     const {content,postId} = req.body;
     const id = req.params.id;
     const updatedComment = {
@@ -87,7 +69,7 @@ const update = (req,res,next) => {
         postId
     }
 
-    const userId = 1;
+    const userId = req.userData.userId;
 
       // creating a scheme for data validation
       const schema = {
@@ -105,55 +87,58 @@ const update = (req,res,next) => {
         })
     }
 
-    models.Comment.update(updatedComment, {where : {id:id,userId:userId}})
-    .then(result => {
-        res.status(200).json({
-            status : true,
-            message : "comment updated successfully",
-            comment : updatedComment
-        })
-    })
-    .catch(error => {
+// making sure only the right user can edit comment
+    const userIdOnComment = await models.Comment.findByPk(id);
+    if(userId != userIdOnComment.userId){
+                res.status(401).json({
+                    status : false,
+                    message : "Unauthorized",
+                })
+                return;
+            }
+
+    try{
+        const result = await models.Comment.update(updatedComment, {where : {id,userId}});
+        if (result) {
+            res.status(200).json({
+                status : true,
+                message : "comment updated successfully",
+                comment : updatedComment
+            })
+        }
+    }
+    catch{
         res.status(500).json({
             status : false,
             message : "something went wrong"
 
         })
-        return next(error);
-
-    })
+    }   
 
 }
 
-const destroy = (req,res) => {
+const destroy = async (req,res) => {
     const id = req.params.id;
-    const userId = 1;
-    models.Comment.destroy({where : {id,userId}})
-    .then(result => {
-        if (result != 0){
-        res.status(200).json({
-            message : "comment deleted successfully",
-            id
-        });}
+    const userId = req.userData.userId;
+    try{
+        const result = await models.Comment.destroy({where : {id,userId}});
+        if (result != 0) res.status(200).json({message : "comment deleted successfully" });
         else{
-            res.status(404).json({
-                message : "Post not found"
-            });
-        }
-    })
-    .catch(error => {
-        console.log(error);
-            res.status(500).send({
-                message: error.message || "INTERNAL SERVER ERROR"
-            });;
+                        res.status(404).json({
+                            message : "No comment found for this user!"
+                        });
+                    }
+    }
+    catch(error){
+                     res.status(500).send({
+                            message:"Oops, something went wrong"
+                        });
+    }
 
-    });
 }
-
 module.exports =  {
     save,
     show,
     update,
     destroy
-
 }

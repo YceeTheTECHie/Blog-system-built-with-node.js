@@ -7,4 +7,5 @@ const checkAuth = require("../middlewares/check-auth");
 const router = express.Router();
 
 router.post("/upload", checkAuth.checkAuth, imageUploader.upload.single('images'), imageController.upload);
+
 module.exports = router;    
