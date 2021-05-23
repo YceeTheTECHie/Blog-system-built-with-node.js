@@ -154,9 +154,6 @@ module.exports =  {
     save,
     show,
     update,
-    // showPost,
-    // index,
-    // update,
     destroy
 
 }

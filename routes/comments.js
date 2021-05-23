@@ -11,6 +11,6 @@ router.patch("/edit/:id", checkAuth.checkAuth, commentController.update);
 router.delete("/:id", checkAuth.checkAuth, commentController.destroy);
 
 
-
+ 
 
 module.exports = router;
