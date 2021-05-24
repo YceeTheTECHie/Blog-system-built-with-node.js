@@ -1,10 +1,10 @@
 {
   "production": {
     "port" : "3306",
-    "username": "freedbtech_Bloggey",
-    "password": "Bloggey",
-    "database": "freedbtech_Bloggey",
-    "host": "freedb.tech",
+    "username": "sql6414454",
+    "password": "FwP5Bm5K4c",
+    "database": "sql6414454",
+    "host": "sql6.freesqldatabase.com",
     "dialect": "mysql"
   }
 }
