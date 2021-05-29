@@ -126,8 +126,6 @@ const update = async (req,res) => {
 
     const PostId = await models.Post.findByPk(id);
 
-
-
     if(PostId == null) {
         res.status(400).json({
             status : false,
@@ -137,8 +135,6 @@ const update = async (req,res) => {
     }
 
     const userIdOnPost = await models.Post.findByPk(id);
-    console.log(userIdOnPost.userId);
-    console.log(userId);
     if(userId != userIdOnPost.userId){
                 res.status(401).json({
                     status : false,
