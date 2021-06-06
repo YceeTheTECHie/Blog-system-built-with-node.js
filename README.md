@@ -1,5 +1,5 @@
-Blog-system-with-admin-auth-and-authorization API - NodeJS🔥 PRs Welcome 
-A Social media Api built with NodeJS and Express framework. Improving day by day.
+Blog System API - NodeJS🔥 PRs Welcome 
+A Blog-system-with-admin-auth-and-authorization Api built with NodeJS and Express framework. 
 
 
 Star⭐ the repo if you like what you see😉.
