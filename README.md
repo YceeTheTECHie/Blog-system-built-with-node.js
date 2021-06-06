@@ -1,39 +1,56 @@
-Blog System API - NodeJS🔥 PRs Welcome 
-A Blog-system-with-admin-auth-and-authorization Api built with NodeJS and Express framework. 
+# Blog system API - NodeJS🔥 
+
+A Blog system with admin auth and authorization Api built with NodeJS and Express framework.
 
 
 Star⭐ the repo if you like what you see😉.
 
-📖Table of contents
-Techologies
-Getting Started
-Features
-Making requests
-Docs
-🛠️Technologies
-NodeJS
-ExpressJS
-Mysql
-Sequelize ORM
+## 📖Table of contents
 
-⛷️Getting Started
+- [Techologies](#technologies)
+- [Getting Started](#getting-started)
+  - [Features](#features)
+  - [Making requests](#making-requests)
+- [Docs](https://www.getpostman.com/collections/9c53ea2a13f36fa9b7ef)
 
-✨Features
- User Signin
- User Signup
- Add friend
- Remove friend
- Create post
- Delete post
- Edit post
- Like/Unlike post
- Comment on post
- Edit Comment
-📮Making requests
-Always attach the token on the request header
+## 🛠️Technologies
 
-🤓 Author
-Boluwatife Ayodele Gbeminiyi
+- NodeJS
+- ExpressJS
+- Mysql
+- Sequelize ORM
+- Chai Test Library
 
-🔖 LICENCE
-WTFPL
+## ⛷️Getting Started
+
+```
+npm install
+```
+
+### ✨Features
+
+- [x] User Signin
+- [x] User Signup
+- [x] Admin SignIn
+- [x] Create post 
+- [x] Delete post
+- [x] Edit post
+- [x] Upload Image
+- [x] Get Uploaded Image
+- [x] Add Comment
+- [x] Edit Comment
+- [x] Delete Comment (User and Admin)
+- [x] Delete Post (User And Admin)
+- [x] Delete User Account (Admin)
+
+### 📮Making requests
+
+Always attach the token on the request header of secured routes.
+
+## 🤓 Author
+
+**Boluwatife Ayodele Gbeminiyi** 
+
+## 🔖 LICENCE
+
+[WTFPL](http://www.wtfpl.net/about/)
