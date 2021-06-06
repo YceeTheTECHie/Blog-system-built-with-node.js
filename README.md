@@ -15,7 +15,9 @@ NodeJS
 ExpressJS
 Mysql
 Sequelize ORM
+
 ⛷️Getting Started
+
 ✨Features
  User Signin
  User Signup
@@ -30,7 +32,7 @@ Sequelize ORM
 📮Making requests
 Always attach the token on the request header
 
-🤓 Author(s)
+🤓 Author
 Boluwatife Ayodele Gbeminiyi
 
 🔖 LICENCE
