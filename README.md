@@ -7,10 +7,10 @@ Star⭐ the repo if you like what you see😉.
 
 ## 📖Table of contents
 
-- [Techologies](#technologies)
-- [Getting Started](#getting-started)
+- [Techologies](#Technologies)
+- [Getting Started](#Getting-started)
   - [Features](#features)
-  - [Making requests](#making-requests)
+  - [Making requests](#Making-requests)
 - [Docs](https://www.getpostman.com/collections/9c53ea2a13f36fa9b7ef)
 
 ## 🛠️Technologies
